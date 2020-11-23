@@ -1,0 +1,15 @@
+arch: s390x
+services:
+  - docker
+env:
+  global:
+    - BUILD_DIR="$PWD"
+    - REPO="quay.io/ibmz/development-workspace"
+    - TAG="$REPO:1.0"
+before_script: 
+  - cd $BUILD_DIR && chmod +x *
+  - docker login quay.io -u $ROBOT -p $ROBOT_TOKEN
+script: 
+  - docker build $BUILD_DIR --tag $TAG
+after_script:
+  - docker push $REPO
